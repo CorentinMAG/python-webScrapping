@@ -58,70 +58,69 @@ def main():
 			if driver.title!="Restaurant Analytics":
 				driver.get(Uber.RedirectURL)
 				time.sleep(5)
-				RestoRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[1]/div[2]/a/div[2]').text
-				NbRestoRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[1]/div[2]/a/div[3]').text.replace('&nbsp;','')
+				# RestoRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[1]/div[2]/a/div[2]').text
+				# NbRestoRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[1]/div[2]/a/div[3]').text.replace('&nbsp;','')
 
-				Income7lastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]').text.replace('&nbsp;','').replace('\n','')
-				Income714LastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]').text.replace('&nbsp;','').replace('\n','')
-				AverageOrderPrice=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[3]').text.replace('\n','')
+				# Income7lastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]').text.replace('&nbsp;','').replace('\n','')
+				# Income714LastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]').text.replace('&nbsp;','').replace('\n','')
+				# AverageOrderPrice=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[3]').text.replace('\n','')
 
-				driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]').click()
-				time.sleep(1)
+				# driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]').click()
+				# time.sleep(1)
 
-				Orders7lastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]').text.replace('\n','')
-				Orders714LastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]').text.replace('\n','')
+				# Orders7lastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]').text.replace('\n','')
+				# Orders714LastDays=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[1]/div[2]/div[1]/div[1]/div[2]/div[1]').text.replace('\n','')
 
-				MissOrders=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/div[2]').text.replace('\n','')
-				WrongOrders=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]').text.replace('\n','')
-				InactivityTime=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[2]/div[2]/div[2]/div[3]/div[1]/div[1]/div[2]').text.replace('\n','')
-
-
-				BestFood=driver.find_elements_by_css_selector('#root > div > div.af.ag.ae.ah > div.am.e0.b3.e1.e2.e3.e4.e5 > div.ai.e6 > div.am.b3.e3 > div:nth-child(1) > div:nth-child(1) > div.ed.am.b3 > div')
-				for elem in BestFood:
-					tab=[]
-					for e in elem.find_elements_by_tag_name('div'):
-						tab.append(e.text.replace("'"," "))
-					Stat1Object[i]=tab
-					i+=1
-
-				NameBestRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[2]/div[1]/div[2]').text.replace('\n','').replace("'"," ")
-				PercentBestRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div/div').text.replace('\n','')
-
-				NameLowerRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[3]/div[1]/div[2]').text.replace('\n','').replace("'"," ")
-				PercentLowerRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[3]/div[2]/div/div').text.replace('\n','')
+				# MissOrders=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[2]/div[2]/div[2]/div[1]/div[1]/div[1]/div[2]').text.replace('\n','')
+				# WrongOrders=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[1]/div[2]').text.replace('\n','')
+				# InactivityTime=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[2]/div[2]/div[2]/div[3]/div[1]/div[1]/div[2]').text.replace('\n','')
 
 
-				driver.find_element_by_xpath('/html/body/div[1]/div/div[2]/div[2]/ul/li[2]/a/div').click()
-				time.sleep(5)
+				# BestFood=driver.find_elements_by_css_selector('#root > div > div.af.ag.ae.ah > div.am.e0.b3.e1.e2.e3.e4.e5 > div.ai.e6 > div.am.b3.e3 > div:nth-child(1) > div:nth-child(1) > div.ed.am.b3 > div')
+				# for elem in BestFood:
+				# 	tab=[]
+				# 	for e in elem.find_elements_by_tag_name('div'):
+				# 		tab.append(e.text.replace("'"," "))
+				# 	Stat1Object[i]=tab
+				# 	i+=1
 
-				PercentAverageMarkbycustomers=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[3]/div[1]/div[3]/div/div/div/div[1]').text.replace('\n','')
-				PercentAverageMarkbydeliveryMan=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[3]/div[2]/div[3]/div/div/div/div[1]').text.replace('\n','')
+				# NameBestRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[2]/div[1]/div[2]').text.replace('\n','').replace("'"," ")
+				# PercentBestRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[2]/div[2]/div/div').text.replace('\n','')
 
-				StatsObject={'RestaurantRate':RestoRate,
-							'NbRestaurantRate':NbRestoRate,
-							'IncomeLast7Days':Income7lastDays,
-							'Orders7lastDays':Orders7lastDays,
-							'IncomeLast714Days':Income714LastDays,
-							'Orders714LastDays':Orders714LastDays,
-							'last7DaysAverageOrderPrice':AverageOrderPrice,
-							'last7DaysMissOrders':MissOrders,
-							'last7DaysWrongOrders':WrongOrders,
-							'last7DaysInactivityTime':InactivityTime,
-							'BestFood':Stat1Object,
-							'NameBestFood':NameBestRate,
-							'PercentBestRate':PercentBestRate,
-							'NameLowerFood':NameLowerRate,
-							'PercentLowerRate':PercentLowerRate,
-							'PercentAverageMarkbycustomers':PercentAverageMarkbycustomers,
-							'PercentAverageMarkbydeliveryMan':PercentAverageMarkbydeliveryMan}
+				# NameLowerRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[3]/div[1]/div[2]').text.replace('\n','').replace("'"," ")
+				# PercentLowerRate=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[1]/div[2]/div[2]/div[1]/div[2]/div/div[3]/div[2]/div/div').text.replace('\n','')
 
-				driver.find_element_by_xpath('/html/body/div[1]/div/div[2]/div[2]/ul/li[3]/a/div').click()
+
+				# driver.find_element_by_xpath('/html/body/div[1]/div/div[2]/div[2]/ul/li[2]/a/div').click()
+				# time.sleep(5)
+
+				# PercentAverageMarkbycustomers=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[3]/div[1]/div[3]/div/div/div/div[1]').text.replace('\n','')
+				# PercentAverageMarkbydeliveryMan=driver.find_element_by_xpath('/html/body/div[1]/div/div[1]/div[3]/div[3]/div[2]/div[3]/div/div/div/div[1]').text.replace('\n','')
+
+				# StatsObject={'RestaurantRate':RestoRate,
+				# 			'NbRestaurantRate':NbRestoRate,
+				# 			'IncomeLast7Days':Income7lastDays,
+				# 			'Orders7lastDays':Orders7lastDays,
+				# 			'IncomeLast714Days':Income714LastDays,
+				# 			'Orders714LastDays':Orders714LastDays,
+				# 			'last7DaysAverageOrderPrice':AverageOrderPrice,
+				# 			'last7DaysMissOrders':MissOrders,
+				# 			'last7DaysWrongOrders':WrongOrders,
+				# 			'last7DaysInactivityTime':InactivityTime,
+				# 			'BestFood':Stat1Object,
+				# 			'NameBestFood':NameBestRate,
+				# 			'PercentBestRate':PercentBestRate,
+				# 			'NameLowerFood':NameLowerRate,
+				# 			'PercentLowerRate':PercentLowerRate,
+				# 			'PercentAverageMarkbycustomers':PercentAverageMarkbycustomers,
+				# 			'PercentAverageMarkbydeliveryMan':PercentAverageMarkbydeliveryMan}
+				driver.find_element_by_xpath('/html/body/div[1]/div/div[2]/div[1]/ul/li[3]/a/div').click()
 				time.sleep(5)
 
 				pin=driver.find_element_by_id('pin-code')
 				pin.send_keys(pinCode)
 
-				driver.find_element_by_css_selector('#app-content > div > div > div > form > button').click()
+				driver.find_element_by_xpath('/html/body/div/div/div/div/form/button').click()
 				time.sleep(10)
 
 				try:
@@ -197,7 +196,6 @@ def main():
 
 
 				FullObject={
-					'stats':StatsObject,
 					'payment':IncomeObject
 				}
 				driver.quit()

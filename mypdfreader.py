@@ -29,31 +29,31 @@ def main():
 	driver.get("file://%s" % (htmlpath));
 	time.sleep(2)
 	try:
-		thead = driver.find_element_by_xpath('/html/body/div[58]/span').text.split("\n")
+		thead = driver.find_element_by_xpath('/html/body/div[57]/span').text.split("\n") # ok
 	except:
 		try:
-			thead = driver.find_element_by_xpath('/html/body/div[58]/span').text.split("\n")
+			thead = driver.find_element_by_xpath('/html/body/div[59]/span').text.split("\n") #ok
 		except:
 			thead=driver.find_element_by_xpath('/html/body/div[60]/span').text.split("\n")
 	try:
 		tbody=driver.find_element_by_xpath('/html/body/div[58]/span[1]').text.split("\n")
 	except:
 		try:
-			tbody = driver.find_element_by_xpath('/html/body/div[59]/span[1]').text.split("\n")
+			tbody = driver.find_element_by_xpath('/html/body/div[60]/span[1]').text.split("\n")
 		except:
 			tbody=driver.find_element_by_xpath('/html/body/div[61]/span[1]').text.split("\n")
 	try:
-		suitethead = driver.find_element_by_xpath('/html/body/div[59]/span[2]').text.split("\n")
+		suitethead = driver.find_element_by_xpath('/html/body/div[58]/span[2]').text.split("\n")
 	except:
 		try:
-			suitethead=driver.find_element_by_xpath('/html/body/div[59]/span[2]').text.split("\n")
+			suitethead=driver.find_element_by_xpath('/html/body/div[60]/span[2]').text.split("\n")
 		except:
 			suitethead=driver.find_element_by_xpath('/html/body/div[61]/span[2]').text.split("\n")
 	try:
-		suitetbody=driver.find_element_by_xpath('/html/body/div[59]/span[3]').text.split("\n")
+		suitetbody=driver.find_element_by_xpath('/html/body/div[58]/span[3]').text.split("\n")
 	except:
 		try:
-			suitetbody=driver.find_element_by_xpath('/html/body/div[58]/span[3]').text.split("\n")
+			suitetbody=driver.find_element_by_xpath('/html/body/div[60]/span[3]').text.split("\n")
 		except:
 			suitetbody=driver.find_element_by_xpath('/html/body/div[61]/span[3]').text.split("\n")
 	time.sleep(2)

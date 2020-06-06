@@ -14,117 +14,117 @@ account=""
 passphrase=""
 
 def main():
-	try:
+	#try:
 
 			#init
-		FullObject=dict()
-		DailyOrders=dict()
-		ReviewOfTheLast7Days=dict()
-		InvoiceObject=dict()
-		TodayOrder=dict()
-		i=0
-		j=0
+	FullObject=dict()
+	DailyOrders=dict()
+	ReviewOfTheLast7Days=dict()
+	InvoiceObject=dict()
+	TodayOrder=dict()
+	i=0
+	j=0
 
-		#run chrome with headless option
-		options=webdriver.ChromeOptions()
-		options.add_argument("headless")
-		options.add_argument('lang=fr')
-		options.add_argument('log-level=3')
-		options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
-		options.add_argument("--no-sandbox") #when run on docker 
+	#run chrome with headless option
+	options=webdriver.ChromeOptions()
+	options.add_argument("headless")
+	options.add_argument('lang=fr')
+	options.add_argument('log-level=3')
+	options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
+	options.add_argument("--no-sandbox") #when run on docker 
 
-		#options to enable pdf downloading
-		options.add_experimental_option("prefs", {
-			"plugins.plugins_list": [{"enabled": False, "name": "Chrome PDF Viewer"}],
-	 		 "download.default_directory": "%s" % (pdfpath) ,
-	  		"download.prompt_for_download": False,
-	  		"download.directory_upgrade": True,
-	  		"download.extensions_to_open": "applications/pdf",
-	  		"safebrowsing.enabled": True
-			})
-		
+	#options to enable pdf downloading
+	options.add_experimental_option("prefs", {
+		"plugins.plugins_list": [{"enabled": False, "name": "Chrome PDF Viewer"}],
+ 		 "download.default_directory": "%s" % (pdfpath) ,
+  		"download.prompt_for_download": False,
+  		"download.directory_upgrade": True,
+  		"download.extensions_to_open": "applications/pdf",
+  		"safebrowsing.enabled": True
+		})
+	
 
-		driver = webdriver.Chrome(options=options,executable_path=path)
-		driver.get(Deliveroo.URLlogin)
-		enable_download_in_headless_chrome(driver,pdfpath)
+	driver = webdriver.Chrome(options=options,executable_path=path)
+	driver.get(Deliveroo.URLlogin)
+	enable_download_in_headless_chrome(driver,pdfpath)
 
-		assert "Deliveroo" in driver.title
+	assert "Deliveroo" in driver.title
 
-		#log-in
-		email=driver.find_elements_by_tag_name('input')[0]
-		email.send_keys(account)
-		password=driver.find_elements_by_tag_name('input')[1]
-		password.send_keys(passphrase)
-		driver.find_element_by_tag_name('button').click()
-		time.sleep(10)
+	#log-in
+	email=driver.find_elements_by_tag_name('input')[0]
+	email.send_keys(account)
+	password=driver.find_elements_by_tag_name('input')[1]
+	password.send_keys(passphrase)
+	driver.find_element_by_tag_name('button').click()
+	time.sleep(10)
 
-		OrdersFinished = driver.find_elements_by_tag_name('h2')[0].text
-		PreparationTime=driver.find_elements_by_tag_name('h2')[1].text
-		TurnOver=driver.find_elements_by_tag_name('h2')[2].text
-		CustomersMark = driver.find_elements_by_tag_name('h2')[5].text
-		RefusedOrders=driver.find_elements_by_tag_name('h2')[3].text
-		RefusedPercentage=driver.find_elements_by_tag_name('h2')[4].text
-		ReviewOfTheLast7Days={"Commandes terminées":OrdersFinished,"Temps de préparation":PreparationTime,"Commandes refusées":RefusedOrders,"Pourcentage de refus":RefusedPercentage,"Chiffre affaire":TurnOver,"Note client":CustomersMark}
+	OrdersFinished = driver.find_elements_by_tag_name('h2')[0].text
+	PreparationTime=driver.find_elements_by_tag_name('h2')[1].text
+	TurnOver=driver.find_elements_by_tag_name('h2')[2].text
+	CustomersMark = driver.find_elements_by_tag_name('h2')[5].text
+	RefusedOrders=driver.find_elements_by_tag_name('h2')[3].text
+	RefusedPercentage=driver.find_elements_by_tag_name('h2')[4].text
+	ReviewOfTheLast7Days={"Commandes terminées":OrdersFinished,"Temps de préparation":PreparationTime,"Commandes refusées":RefusedOrders,"Pourcentage de refus":RefusedPercentage,"Chiffre affaire":TurnOver,"Note client":CustomersMark}
 
-		js="""let anchor = document.querySelectorAll('a')[3];
-		anchor.click();"""
-		driver.execute_script(js)
-		time.sleep(5)
+	js="""let anchor = document.querySelectorAll('a')[3];
+	anchor.click();"""
+	driver.execute_script(js)
+	time.sleep(5)
 
-		#daily order
-		try:
-			TotalOrders = driver.find_elements_by_tag_name('h2')[0].text
-			OrdersConfirmed = driver.find_elements_by_tag_name('h2')[1].text
-			DailyTurnOver = driver.find_elements_by_tag_name('h2')[2].text
-			AllOrders=driver.find_elements_by_class_name('tcl__TableRow-188f4a81')
-			for order in AllOrders:
-				Number=order.find_elements_by_tag_name('div')[0].text
-				Date=order.find_elements_by_tag_name('div')[1].text
-				status=order.find_elements_by_tag_name('div')[2].text
-				Price=order.find_elements_by_tag_name('div')[3].text
-				TodayOrder[j]={'Commande':Number,'Date':Date,'status':status,'Price':Price}
-				j+=1
-			DailyOrders={"TotalOrders":TotalOrders,"ConfirmOrders":OrdersConfirmed,"DailyTurnOver":DailyTurnOver,"TodayOrder":TodayOrder}
-		except:
-			DailyOrders["data"]="Pas de commandes ce jour-ci"
-
-		js="""let anchor = document.querySelectorAll('a')[6];
-		anchor.click();"""
-		driver.execute_script(js)
-
-		#invoices
-		time.sleep(10)
-		test=driver.find_element_by_xpath('/html/body/div[1]/div[1]/main/div[2]/div/div[2]/div/div/div/div[2]/div[1]')
-		a = test.find_element_by_tag_name('a')
-		h=a.get_attribute('href')
-		time.sleep(5)
-		driver.get(h)
-		time.sleep(5)
-
-		pdfdetail=mypdfreader.main()
-
-		time.sleep(3)
-		try:
-			Invoices = driver.find_elements_by_class_name('tcl__TableRow-188f4a81')
-			for invoice in Invoices:
-				num = invoice.find_elements_by_class_name('tcl__Text-03d692ab')[0].text
-				date = invoice.find_elements_by_class_name('tcl__Text-03d692ab')[1].text
-				price = invoice.find_elements_by_class_name('tcl__Text-03d692ab')[2].text
-				InvoiceObject[i]={"acn":num,"date":date,"price":price}
-				i+=1
-		except:
-			InvoiceObject['data']='Pas de factures'
-		driver.quit()
-
-		FullObject['ReviewOfTheLast7Days']=ReviewOfTheLast7Days
-		FullObject['DailyOrders']=DailyOrders
-		FullObject['Invoices']=InvoiceObject
-		FullObject['PDFdetail']=pdfdetail
-
-		FullObjectJSON = json.dumps(FullObject,ensure_ascii=False)
-		return FullObjectJSON
+	#daily order
+	try:
+		TotalOrders = driver.find_elements_by_tag_name('h2')[0].text
+		OrdersConfirmed = driver.find_elements_by_tag_name('h2')[1].text
+		DailyTurnOver = driver.find_elements_by_tag_name('h2')[2].text
+		AllOrders=driver.find_elements_by_class_name('tcl__TableRow-188f4a81')
+		for order in AllOrders:
+			Number=order.find_elements_by_tag_name('div')[0].text
+			Date=order.find_elements_by_tag_name('div')[1].text
+			status=order.find_elements_by_tag_name('div')[2].text
+			Price=order.find_elements_by_tag_name('div')[3].text
+			TodayOrder[j]={'Commande':Number,'Date':Date,'status':status,'Price':Price}
+			j+=1
+		DailyOrders={"TotalOrders":TotalOrders,"ConfirmOrders":OrdersConfirmed,"DailyTurnOver":DailyTurnOver,"TodayOrder":TodayOrder}
 	except:
-		return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
+		DailyOrders["data"]="Pas de commandes ce jour-ci"
+
+	js="""let anchor = document.querySelectorAll('a')[6];
+	anchor.click();"""
+	driver.execute_script(js)
+
+	#invoices
+	time.sleep(10)
+	test=driver.find_element_by_xpath('/html/body/div[1]/div[1]/main/div[2]/div/div[2]/div/div/div/div[2]/div[1]')
+	a = test.find_element_by_tag_name('a')
+	h=a.get_attribute('href')
+	time.sleep(5)
+	driver.get(h)
+	time.sleep(5)
+
+	pdfdetail=mypdfreader.main()
+
+	time.sleep(3)
+	try:
+		Invoices = driver.find_elements_by_class_name('tcl__TableRow-188f4a81')
+		for invoice in Invoices:
+			num = invoice.find_elements_by_class_name('tcl__Text-03d692ab')[0].text
+			date = invoice.find_elements_by_class_name('tcl__Text-03d692ab')[1].text
+			price = invoice.find_elements_by_class_name('tcl__Text-03d692ab')[2].text
+			InvoiceObject[i]={"acn":num,"date":date,"price":price}
+			i+=1
+	except:
+		InvoiceObject['data']='Pas de factures'
+	driver.quit()
+
+	FullObject['ReviewOfTheLast7Days']=ReviewOfTheLast7Days
+	FullObject['DailyOrders']=DailyOrders
+	FullObject['Invoices']=InvoiceObject
+	FullObject['PDFdetail']=pdfdetail
+
+	FullObjectJSON = json.dumps(FullObject,ensure_ascii=False)
+	return FullObjectJSON
+	# except:
+	# 	return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
 
 def enable_download_in_headless_chrome(driver, download_dir):
 	"""
