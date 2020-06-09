@@ -144,5 +144,7 @@ def enable_download_in_headless_chrome(driver, download_dir):
 		print("result:" + key + ":" + str(command_result[key]))
 
 if __name__=='__main__':
+	account='otacos.parispatay@resto-tacos.fr'
+	passphrase='tacos75013'
 	print(main())
 

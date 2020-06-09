@@ -30,32 +30,64 @@ def main():
 	time.sleep(2)
 	try:
 		thead = driver.find_element_by_xpath('/html/body/div[57]/span').text.split("\n") # ok
+		if 'Montant total de la commande TTC' in thead[0]:
+			pass
+		else:
+			raise ValueError('Pas le bon, on passe au suivant')
 	except:
 		try:
 			thead = driver.find_element_by_xpath('/html/body/div[59]/span').text.split("\n") #ok
+			if 'Montant total de la commande TTC' in thead[0]:
+				pass
+			else:
+				raise ValueError('Pas le bon, on passe au suivant')
 		except:
-			thead=driver.find_element_by_xpath('/html/body/div[60]/span').text.split("\n")
+			thead=driver.find_element_by_xpath('/html/body/div[58]/span').text.split("\n") #ok
 	try:
 		tbody=driver.find_element_by_xpath('/html/body/div[58]/span[1]').text.split("\n")
+		if '€' in tbody[0]:
+			pass
+		else:
+			raise ValueError('Pas le bon, on passe au suivant')
 	except:
 		try:
 			tbody = driver.find_element_by_xpath('/html/body/div[60]/span[1]').text.split("\n")
+			if '€' in tbody[0]:
+				pass
+			else:
+				raise ValueError('Pas le bon, on passe au suivant')
 		except:
-			tbody=driver.find_element_by_xpath('/html/body/div[61]/span[1]').text.split("\n")
+			tbody=driver.find_element_by_xpath('/html/body/div[59]/span[1]').text.split("\n")
 	try:
 		suitethead = driver.find_element_by_xpath('/html/body/div[58]/span[2]').text.split("\n")
+		if 'Montant TTC facturable par Deliveroo' in suitethead[0]:
+			pass
+		else:
+			raise ValueError('Pas le bon, on passe au suivant')
 	except:
 		try:
 			suitethead=driver.find_element_by_xpath('/html/body/div[60]/span[2]').text.split("\n")
+			if 'Montant TTC facturable par Deliveroo' in suitethead[0]:
+				pass
+			else:
+				raise ValueError('Pas le bon, on passe au suivant')
 		except:
-			suitethead=driver.find_element_by_xpath('/html/body/div[61]/span[2]').text.split("\n")
+			suitethead=driver.find_element_by_xpath('/html/body/div[59]/span[2]').text.split("\n")
 	try:
 		suitetbody=driver.find_element_by_xpath('/html/body/div[58]/span[3]').text.split("\n")
+		if '€' in suitetbody[0]:
+			pass
+		else:
+			raise ValueError('Pas le bon, on passe au suivant')
 	except:
 		try:
 			suitetbody=driver.find_element_by_xpath('/html/body/div[60]/span[3]').text.split("\n")
+			if '€' in suitetbody[0]:
+				pass
+			else:
+				raise ValueError('Pas le bon, on passe au suivant')
 		except:
-			suitetbody=driver.find_element_by_xpath('/html/body/div[61]/span[3]').text.split("\n")
+			suitetbody=driver.find_element_by_xpath('/html/body/div[59]/span[3]').text.split("\n")
 	time.sleep(2)
 	driver.quit()
 	os.remove(htmlpath)

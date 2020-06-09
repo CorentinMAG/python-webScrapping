@@ -205,5 +205,7 @@ def main():
 		return "Impossible de récupérer les données, les identifiants sont peut être incorrects (UBER) id :"+account+" pass :"+passphrase+", il faut peut être utiliser anti captcha!"
 
 if __name__=='__main__':
+	account='diengmoussa802+3@gmail.com'
+	passphrase='6adb16db1'
 	print(main())
 
