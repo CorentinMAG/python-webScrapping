@@ -176,8 +176,5 @@ def main():
 		return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
 
 if __name__=='__main__':
-	account='OTAPATAY'
-	companyphrase='OTA'
-	passphrase='Elena99$3'
 	print(main())
 
