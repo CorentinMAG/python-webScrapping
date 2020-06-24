@@ -24,7 +24,7 @@ def main():
 
 		#run chrome with headless option
 		options=webdriver.ChromeOptions()
-		options.add_argument('headless')
+		#options.add_argument('headless')
 		options.add_argument('lang=fr')
 		options.add_argument('log-level=3')
 		driver = webdriver.Chrome(options=options,executable_path=path)
@@ -120,12 +120,23 @@ def main():
 		time.sleep(3)
 
 		#invoice of the month
+		selectDate = driver.find_element_by_xpath('/html/body/div/div/main/div/nav/div/label/select/option[2]').click()
+		time.sleep(2)
 		totalttc = driver.find_element_by_class_name('total').find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')[2].find_elements_by_tag_name('td')[1].find_element_by_tag_name('strong').text
 		InvoiceDate = driver.find_elements_by_class_name('info')[1].find_element_by_tag_name('ul').find_elements_by_tag_name('li')[1].find_element_by_tag_name('strong').text
 		try:
 			solde = driver.find_element_by_class_name('page-break').find_element_by_tag_name('table').find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')[2].find_elements_by_tag_name('td')[3].find_element_by_tag_name('strong').text
 		except:
 			solde=driver.find_element_by_class_name('page-break').find_element_by_tag_name('table').find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')[3].find_elements_by_tag_name('td')[3].find_element_by_tag_name('strong').text
+		try:
+			compensation = driver.find_element_by_class_name('page-break').find_element_by_tag_name('table').find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')[1]
+			if 'Compensation' in compensation.text:
+				compensationValue = compensation.find_elements_by_tag_name('td')[3].text.replace('&nbsp;','')
+				InvoiceObject['compensation']=compensationValue
+			else:
+				raise ValueError('Pas de compensation')
+		except:
+			pass
 		totalHT=driver.find_element_by_class_name('total').find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')[0].find_elements_by_tag_name('td')[1].find_element_by_tag_name('strong').text
 		TVA=driver.find_element_by_class_name('total').find_element_by_tag_name('tbody').find_elements_by_tag_name('tr')[1].find_elements_by_tag_name('td')[1].find_element_by_tag_name('strong').text
 		NumFacture=driver.find_element_by_css_selector('div.info:nth-child(3) > ul:nth-child(2) > li:nth-child(3) > strong:nth-child(2)').text
