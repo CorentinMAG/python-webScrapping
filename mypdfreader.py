@@ -13,6 +13,7 @@ def main():
 		pathpdffile=pdfpath+file
 	else:
 		file=os.listdir(pdfpath)[-1]
+		print(file)
 		pathpdffile=pdfpath+file
 	os.system(("%s -o %s %s") % (command,htmlpath,pathpdffile))
 	os.remove(pathpdffile)

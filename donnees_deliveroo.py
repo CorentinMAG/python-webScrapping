@@ -6,12 +6,14 @@ import os
 from configuration import Deliveroo,path
 from configuration import pdfpath
 import mypdfreader
-
+import requests
+from post_to_api import post_data_to_api
 
 """Script to retrieve data from deliveroo"""
 
 account=""
 passphrase=""
+dossier=""
 
 def main():
 	#try:
@@ -27,11 +29,11 @@ def main():
 
 	#run chrome with headless option
 	options=webdriver.ChromeOptions()
-	options.add_argument("headless")
+	#options.add_argument("headless")
 	options.add_argument('lang=fr')
 	options.add_argument('log-level=3')
-	options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
-	options.add_argument("--no-sandbox") #when run on docker 
+	#options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
+	#options.add_argument("--no-sandbox") #when run on docker 
 
 	#options to enable pdf downloading
 	options.add_experimental_option("prefs", {
@@ -121,10 +123,64 @@ def main():
 	FullObject['Invoices']=InvoiceObject
 	FullObject['PDFdetail']=pdfdetail
 
+	date_td=datetime.today().strftime('%Y-%m-%d')
+	data="""<importEntryRequest>\n
+	<importDate>"""+str(date)+"""</importDate>\n
+	<wsImportEntry>\n
+	<importEntry>\n
+	<journalRef>VT</journalRef>\n
+	<date>""" + date_d + """</date>\n
+	<accountNumber>7072000000</accountNumber>\n
+	<description>DELIVEROO</description>\n
+	<credit>""" + str(float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1) + """</credit>\n
+	<debit>0</debit>\n
+	</importEntry>\n
+	<importEntry>\n
+	<journalRef>VT</journalRef>\n
+	<date>""" + date_d + """</date>\n
+	<accountNumber>5115000000</accountNumber>\n
+	<description>DELIVEROO</description>\n
+	<credit>0</credit>\n
+	<debit>""" + pdfdetail['Tbody'][5].replace('€','').replace(',','.').replace(' ','') + """</debit>\n
+	</importEntry>\n
+	<importEntry>\n
+	<journalRef>VT</journalRef>\n
+	<date>""" + date_d + """</date>\n
+	<accountNumber>6225000000</accountNumber>\n
+	<description>DELIVEROO</description>\n
+	<credit>0</credit>\n
+	<debit>""" + str(float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2) + """</debit>\n
+	</importEntry>\n
+	<importEntry>\n
+	<journalRef>VT</journalRef>\n
+	<date>""" + date_d + """</date>\n
+	<accountNumber>4457100000</accountNumber>\n
+	<description>DELIVEROO</description>\n
+	<credit>""" + str((float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1)*0.1) + """</credit>\n
+	<debit>0</debit>\n
+	/importEntry>\n
+	<importEntry>\n
+	<journalRef>VT</journalRef>\n
+	<date>""" + date_d + """</date>\n
+	<accountNumber>4456600000</accountNumber>\n
+	<description>DELIVEROO</description>\n
+	<credit>0</credit>\n
+	<debit>"""+ str((float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2)*0.2) + """</debit>\n
+	</importEntry>\n
+	</wsImportEntry>\n
+	</importEntryRequest>\n
+	"""
+
+	post_data(data,dossier)
+
 	FullObjectJSON = json.dumps(FullObject,ensure_ascii=False)
 	return FullObjectJSON
 	# except:
 	# 	return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
+
+def post_data(data,dossier):
+	print(data)
+	post_data_to_api(data,dossier)
 
 def enable_download_in_headless_chrome(driver, download_dir):
 	"""
@@ -142,6 +198,7 @@ def enable_download_in_headless_chrome(driver, download_dir):
 	print("response from browser:")
 	for key in command_result:
 		print("result:" + key + ":" + str(command_result[key]))
+
 
 if __name__=='__main__':
 	print(main())

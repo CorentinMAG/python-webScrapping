@@ -3,6 +3,8 @@ from selenium import webdriver
 import json
 import time
 from configuration import Oracle,path
+from post_to_api import post_data_to_api
+from datetime import datetime
 
 
 
@@ -11,6 +13,7 @@ from configuration import Oracle,path
 account=""
 companyphrase=""
 passphrase=""
+dossier=""
 
 def main():
 	#try:
@@ -20,7 +23,7 @@ def main():
 
 	#run chrome with headless option
 	options=webdriver.ChromeOptions()
-	#options.add_argument('headless')
+	options.add_argument('headless')
 	options.add_argument('lang=fr')
 	options.add_argument('log-level=3')
 	driver = webdriver.Chrome(options=options,executable_path=path)
@@ -179,10 +182,122 @@ def main():
 		pass
 	driver.quit()
 
+	vht10tva=float(FullObject['TaxB'][1][4].replace('€','').replace(',','.').replace(' ',''))+float(FullObject['TaxB'][2][4].replace('€','').replace(',','.').replace(' ',''))
+	vcol10=float(FullObject['TaxB'][1][2].replace('€','').replace(',','.').replace(' ',''))+float(FullObject['TaxB'][2][2].replace('€','').replace(',','.').replace(' ',''))
+	vht5tva=float(FullObject['TaxB'][3][4].replace('€','').replace(',','.').replace(' ',''))+float(FullObject['TaxB'][4][4].replace('€','').replace(',','.').replace(' ',''))
+	vcol5=float(FullObject['TaxB'][3][2].replace('€','').replace(',','.').replace(' ',''))+float(FullObject['TaxB'][4][2].replace('€','').replace(',','.').replace(' ',''))
+	especeR=FullObject['ReglementB'][2][1].replace(',','.').replace(' ','')
+	cbR=FullObject['ReglementB'][1][1].replace(',','.').replace(' ','')
+	tkrR=FullObject['ReglementB'][3][1].replace(',','.').replace(' ','')
+	tab_date=FullObject['TaxTitle'][1][2].split(" ")
+	if tab_date[0] == "JAN":
+		tab_date[0] = "01"
+	elif tab_date[0] == "FEB":
+		tab_date[0] = "02"
+	elif tab_date[0] == "MAR":
+		tab_date[0] = "03"
+	elif tab_date[0] == "APR":
+		tab_date[0] = "04"
+	elif tab_date[0] == "MAY":
+		tab_date[0] = "05"
+	elif tab_date[0] == "JUN":
+		tab_date[0] = "06"
+	elif tab_date[0] == "JUL":
+		tab_date[0] = "07"
+	elif tab_date[0] == "AUG":
+		tab_date[0] = "08"
+	elif tab_date[0] == "SEP":
+		tab_date[0] = "09"
+	elif tab_date[0] == "OCT":
+		tab_date[0] = "10"
+	elif tab_date[0] == "NOV":
+		tab_date[0] = "11"
+	elif tab_date[0] == "DEC":
+		tab_date[0] = "12"
+	date=tab_date[2]+"-"+tab_date[0]+"-"+tab_date[1]
+	date_td=datetime.today().strftime('%Y-%m-%d')
+	data="""<importEntryRequest>
+				<importDate>"""+str(date_td)+"""</importDate>
+				<wsImportEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" +str(date)+ """</date>
+						<accountNumber>7071000000</accountNumber>
+						<description>Ventes HT 10% TVA</description>
+						<credit>""" + str(vht10tva) + """</credit>
+						<debit>0</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>4457100000</accountNumber>
+						<description>TVA collectees 10%</description>
+						<credit>""" + str(vcol10) + """</credit>
+						<debit>0</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>7075000000</accountNumber>
+						<description>Ventes HT 5% TVA</description>
+						<credit>""" + str(vht5tva) + """</credit>
+						<debit>0</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>4457100000</accountNumber>
+						<description>TVA collectees 5%</description>
+						<credit>""" + str(vcol5) + """</credit>
+						<debit>0</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>5110000000</accountNumber>
+						<description>Especes</description>
+						<credit>0</credit>
+						<debit>"""+ str(especeR) + """</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>5800000000</accountNumber>
+						<description>Carte bancaire</description>
+						<credit>0</credit>
+						<debit>""" + str(cbR) + """</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>5111000000</accountNumber>
+						<description>Ticket restaurant</description>
+						<credit>0</credit>
+						<debit>""" + str(tkrR) + """</debit>
+					</importEntry>
+					<importEntry>
+						<journalRef>VT</journalRef>
+						<date>""" + str(date) + """</date>
+						<accountNumber>5800000000</accountNumber>
+						<description>Ecart</description>
+						<credit>""" + str(round(vht10tva+vcol10+vht5tva+vcol5+float(especeR)+float(cbR)+float(tkrR),2)) + """</credit>
+						<debit>0</debit>
+					</importEntry>
+					</wsImportEntry>
+			</importEntryRequest>"""
+
+	post_data(data,dossier)
+
 	FullObjectJSON = json.dumps(FullObject,ensure_ascii=False)
 	return FullObjectJSON
 	#except:
 	#	return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
+
+
+def post_data(data,dossier):
+	print(data)
+	post_data_to_api(data,dossier)
+
 
 if __name__=='__main__':
 	print(main())
