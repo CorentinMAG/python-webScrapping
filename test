@@ -1,0 +1,69 @@
+<importEntryRequest>
+	    <importDate>2020-08-31</importDate>
+	    <wsImportEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>7071000000</accountNumber>
+	            <description>Ventes HT 10% TVA</description>
+	            <credit>4334.38</credit>
+	            <debit>0</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>4457100000</accountNumber>
+	            <description>TVA collectées 10%</description>
+	            <credit>433.44</credit>
+	            <debit>0</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>7075000000</accountNumber>
+	            <description>Ventes HT 5% TVA</description>
+	            <credit>677.87</credit>
+	            <debit>0</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>4457100000</accountNumber>
+	            <description>TVA collectées 5%</description>
+	            <credit>37.28</credit>
+	            <debit>0</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>5110000000</accountNumber>
+	            <description>Espèces</description>
+	            <credit>0</credit>
+	            <debit>569.70</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>5800000000</accountNumber>
+	            <description>Carte bancaire</description>
+	            <credit>0</credit>
+	            <debit>4590.90</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>5111000000</accountNumber>
+	            <description>Ticket restaurant</description>
+	            <credit>0</credit>
+	            <debit>286.47</debit>
+	        </importEntry>
+	        <importEntry>
+	            <journalRef>VT</journalRef>
+	            <date>2020-08-31</date>
+	            <accountNumber>5800000000</accountNumber>
+	            <description>Ecart</description>
+	            <credit>10930.04</credit>
+	            <debit>0</debit>
+	        </importEntry>
+	    </wsImportEntry>
+	</importEntryRequest>
