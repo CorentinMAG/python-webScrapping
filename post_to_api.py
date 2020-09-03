@@ -1,8 +1,6 @@
 import requests 
 
 def post_data_to_api(content,dossier):
-	#problème si content contient des accents (xml non valide)
-	#solution : data = content.encode('utf-8') ou retirer les accents
 	url="https://saas.irf-cloud.com/irfservice/services/irfservice.svc/company/{"+dossier+"}/entries"
 	headers ={
 		'Content-Type': 'application/xml',

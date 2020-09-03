@@ -5,6 +5,7 @@ import time
 from configuration import Oracle,path
 from post_to_api import post_data_to_api
 from datetime import datetime
+from env.config import ORACLE
 
 
 
@@ -300,5 +301,9 @@ def post_data(data,dossier):
 
 
 if __name__=='__main__':
+	account=ORACLE['account']
+	companyphrase=ORACLE['company']
+	passphrase=ORACLE['password']
+	dossier=ORACLE['dossier']
 	print(main())
 

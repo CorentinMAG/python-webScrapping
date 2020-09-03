@@ -32,8 +32,8 @@ def main():
 	#options.add_argument("headless")
 	options.add_argument('lang=fr')
 	options.add_argument('log-level=3')
-	#options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
-	#options.add_argument("--no-sandbox") #when run on docker 
+	options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
+	options.add_argument("--no-sandbox") #when run on docker 
 
 	#options to enable pdf downloading
 	options.add_experimental_option("prefs", {

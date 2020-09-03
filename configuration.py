@@ -28,7 +28,7 @@ if os.name=='nt':
 else:
 	path="/usr/bin/chromedriver"
 	pdfpath='/tmp/mypdf/'
-	command='python3 /home/cor_mag91/.local/bin/pdf2txt.py'
+	command='python3 /usr/local/bin/pdf2txt.py'
 	htmlpath='/tmp/mypdf/file.html'
 
 #le fichier qui contient les infos pour se connecter
