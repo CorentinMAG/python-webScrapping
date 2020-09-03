@@ -8,6 +8,8 @@ from configuration import pdfpath
 import mypdfreader
 import requests
 from post_to_api import post_data_to_api
+from env.config import DELIVEROO
+from datetime import datetime
 
 """Script to retrieve data from deliveroo"""
 
@@ -29,11 +31,13 @@ def main():
 
 	#run chrome with headless option
 	options=webdriver.ChromeOptions()
-	#options.add_argument("headless")
+	options.add_argument("headless")
 	options.add_argument('lang=fr')
 	options.add_argument('log-level=3')
 	options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
 	options.add_argument("--no-sandbox") #when run on docker 
+	if os.name =='nt':
+		options.add_argument("--disable-gpu") #on windows
 
 	#options to enable pdf downloading
 	options.add_experimental_option("prefs", {
@@ -48,7 +52,7 @@ def main():
 
 	driver = webdriver.Chrome(options=options,executable_path=path)
 	driver.get(Deliveroo.URLlogin)
-	enable_download_in_headless_chrome(driver,pdfpath)
+	#enable_download_in_headless_chrome(driver,pdfpath)
 
 	assert "Deliveroo" in driver.title
 
@@ -125,19 +129,19 @@ def main():
 
 	date_td=datetime.today().strftime('%Y-%m-%d')
 	data="""<importEntryRequest>\n
-	<importDate>"""+str(date)+"""</importDate>\n
+	<importDate>"""+str(date_td)+"""</importDate>\n
 	<wsImportEntry>\n
 	<importEntry>\n
 	<journalRef>VT</journalRef>\n
-	<date>""" + date_d + """</date>\n
+	<date>""" + date + """</date>\n
 	<accountNumber>7072000000</accountNumber>\n
 	<description>DELIVEROO</description>\n
-	<credit>""" + str(float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1) + """</credit>\n
+	<credit>""" + str(round(float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1,2)) + """</credit>\n
 	<debit>0</debit>\n
 	</importEntry>\n
 	<importEntry>\n
 	<journalRef>VT</journalRef>\n
-	<date>""" + date_d + """</date>\n
+	<date>""" + date + """</date>\n
 	<accountNumber>5115000000</accountNumber>\n
 	<description>DELIVEROO</description>\n
 	<credit>0</credit>\n
@@ -145,27 +149,27 @@ def main():
 	</importEntry>\n
 	<importEntry>\n
 	<journalRef>VT</journalRef>\n
-	<date>""" + date_d + """</date>\n
+	<date>""" + date + """</date>\n
 	<accountNumber>6225000000</accountNumber>\n
 	<description>DELIVEROO</description>\n
 	<credit>0</credit>\n
-	<debit>""" + str(float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2) + """</debit>\n
+	<debit>""" + str(round(float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2,2)) + """</debit>\n
 	</importEntry>\n
 	<importEntry>\n
 	<journalRef>VT</journalRef>\n
-	<date>""" + date_d + """</date>\n
+	<date>""" + date + """</date>\n
 	<accountNumber>4457100000</accountNumber>\n
 	<description>DELIVEROO</description>\n
-	<credit>""" + str((float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1)*0.1) + """</credit>\n
+	<credit>""" + str(round((float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1)*0.1,2)) + """</credit>\n
 	<debit>0</debit>\n
 	/importEntry>\n
 	<importEntry>\n
 	<journalRef>VT</journalRef>\n
-	<date>""" + date_d + """</date>\n
+	<date>""" + date + """</date>\n
 	<accountNumber>4456600000</accountNumber>\n
 	<description>DELIVEROO</description>\n
 	<credit>0</credit>\n
-	<debit>"""+ str((float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2)*0.2) + """</debit>\n
+	<debit>"""+ str(round((float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2)*0.2,2)) + """</debit>\n
 	</importEntry>\n
 	</wsImportEntry>\n
 	</importEntryRequest>\n
@@ -201,5 +205,7 @@ def enable_download_in_headless_chrome(driver, download_dir):
 
 
 if __name__=='__main__':
+	account=DELIVEROO['account']
+	passphrase=DELIVEROO['password']
 	print(main())
 
