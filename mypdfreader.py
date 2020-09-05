@@ -28,18 +28,34 @@ def main():
 	driver = webdriver.Chrome(options=options,executable_path=path)
 	driver.get("file://%s" % (htmlpath));
 	time.sleep(2)
-
-	all = driver.find_element_by_xpath('/html/body/div[61]/span[1]').text
-	all = all.split('\n')
-
-	thead = all[::2]
-	tbody = all[1::2]
 	
-	suitethead=driver.find_element_by_xpath('/html/body/div[61]/span[2]').text
-	suitetbody=driver.find_element_by_xpath('/html/body/div[61]/span[3]').text
+	#la structure du pdf change souvent...
+	all = driver.find_element_by_xpath('/html/body/div[61]/span[1]').text
+	if 'Montant total de la commande TTC' in all:
 
-	finalthead=driver.find_element_by_xpath('/html/body/div[61]/span[4]').text
-	finaltbody=driver.find_element_by_xpath('/html/body/div[61]/span[5]').text
+		all = all.split('\n')
+
+		thead = all[::2]
+		tbody = all[1::2]
+		
+		suitethead=driver.find_element_by_xpath('/html/body/div[61]/span[2]').text
+		suitetbody=driver.find_element_by_xpath('/html/body/div[61]/span[3]').text
+
+		finalthead=driver.find_element_by_xpath('/html/body/div[61]/span[4]').text
+		finaltbody=driver.find_element_by_xpath('/html/body/div[61]/span[5]').text
+	else:
+		all = driver.find_element_by_xpath('/html/body/div[60]/span[1]').text
+		all = all.split('\n')
+
+		thead=all[::2]
+		tbody=all[1::2]
+
+		suitethead=driver.find_element_by_xpath('/html/body/div[60]/span[2]').text
+		suitetbody=driver.find_element_by_xpath('/html/body/div[60]/span[3]').text
+
+		finalthead=driver.find_element_by_xpath('/html/body/div[60]/span[4]').text
+		finaltbody=driver.find_element_by_xpath('/html/body/div[60]/span[5]').text
+
 
 	thead.append(suitethead)
 	thead.append(finalthead)
