@@ -119,7 +119,7 @@ def main():
 					Frais['frais Uber']=tr.find_elements_by_tag_name('td')[2].text
 				if 'Bonus' in tr.text or 'prime' in tr.text:
 					Frais['Bonus']=tr.find_elements_by_tag_name('td')[2].text
-				if 'Ajustements' in tr.text or 'adjustement' in tr.text:
+				if 'Ajustements' in tr.text or 'Adjustements' in tr.text:
 					Frais['ajustement']=tr.find_elements_by_tag_name('td')[2].text
 				if 'Misc' in tr.text:
 					Frais['Misc Payment']=tr.find_elements_by_tag_name('td')[2].text
