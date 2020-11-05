@@ -31,7 +31,7 @@ def main():
 
 	#run chrome with headless option
 	options=webdriver.ChromeOptions()
-	options.add_argument("headless")
+	#options.add_argument("headless")
 	options.add_argument('lang=fr')
 	options.add_argument('log-level=3')
 	options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
@@ -72,9 +72,11 @@ def main():
 	RefusedPercentage=driver.find_elements_by_tag_name('h2')[4].text
 	ReviewOfTheLast7Days={"Commandes terminées":OrdersFinished,"Temps de préparation":PreparationTime,"Commandes refusées":RefusedOrders,"Pourcentage de refus":RefusedPercentage,"Chiffre affaire":TurnOver,"Note client":CustomersMark}
 
-	js="""let anchor = document.querySelectorAll('a')[3];
-	anchor.click();"""
-	driver.execute_script(js)
+	try:
+		driver.find_element_by_link_text('Ventes')
+		driver.find_element_by_link_text('Ventes').click()
+	except:
+		driver.find_element_by_link_text('Sales').click()
 	time.sleep(5)
 
 	#daily order
@@ -94,9 +96,11 @@ def main():
 	except:
 		DailyOrders["data"]="Pas de commandes ce jour-ci"
 
-	js="""let anchor = document.querySelectorAll('a')[6];
-	anchor.click();"""
-	driver.execute_script(js)
+	try:
+		driver.find_element_by_link_text('Factures')
+		driver.find_element_by_link_text('Factures').click()
+	except:
+		driver.find_element_by_link_text('Invoices').click()
 
 	#invoices
 	time.sleep(10)
@@ -120,6 +124,10 @@ def main():
 			i+=1
 	except:
 		InvoiceObject['data']='Pas de factures'
+
+	date_el = driver.find_element_by_class_name('tcl__TableRow-188f4a81')
+	date = date_el.find_elements_by_class_name('tcl__Text-03d692ab')[1].text
+	
 	driver.quit()
 
 	FullObject['ReviewOfTheLast7Days']=ReviewOfTheLast7Days
@@ -127,60 +135,64 @@ def main():
 	FullObject['Invoices']=InvoiceObject
 	FullObject['PDFdetail']=pdfdetail
 
+	
+	print(dossier)
 	date_td=datetime.today().strftime('%Y-%m-%d')
+	date = date[-11:].strip()
+	date = datetime.strptime(date,"%d %b %Y").strftime("%Y-%m-%d")
 	data="""<importEntryRequest>\n
-	<importDate>"""+str(date_td)+"""</importDate>\n
-	<wsImportEntry>\n
-	<importEntry>\n
-	<journalRef>VT</journalRef>\n
-	<date>""" + date + """</date>\n
-	<accountNumber>7072000000</accountNumber>\n
-	<description>DELIVEROO</description>\n
-	<credit>""" + str(round(float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1,2)) + """</credit>\n
-	<debit>0</debit>\n
-	</importEntry>\n
-	<importEntry>\n
-	<journalRef>VT</journalRef>\n
-	<date>""" + date + """</date>\n
-	<accountNumber>5115000000</accountNumber>\n
-	<description>DELIVEROO</description>\n
-	<credit>0</credit>\n
-	<debit>""" + pdfdetail['Tbody'][5].replace('€','').replace(',','.').replace(' ','') + """</debit>\n
-	</importEntry>\n
-	<importEntry>\n
-	<journalRef>VT</journalRef>\n
-	<date>""" + date + """</date>\n
-	<accountNumber>6225000000</accountNumber>\n
-	<description>DELIVEROO</description>\n
-	<credit>0</credit>\n
-	<debit>""" + str(round(float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2,2)) + """</debit>\n
-	</importEntry>\n
-	<importEntry>\n
-	<journalRef>VT</journalRef>\n
-	<date>""" + date + """</date>\n
-	<accountNumber>4457100000</accountNumber>\n
-	<description>DELIVEROO</description>\n
-	<credit>""" + str(round((float(pdfdetail['Tbody'][0].replace('€','').replace(',','.').replace(' ',''))/1.1)*0.1,2)) + """</credit>\n
-	<debit>0</debit>\n
-	/importEntry>\n
-	<importEntry>\n
-	<journalRef>VT</journalRef>\n
-	<date>""" + date + """</date>\n
-	<accountNumber>4456600000</accountNumber>\n
-	<description>DELIVEROO</description>\n
-	<credit>0</credit>\n
-	<debit>"""+ str(round((float(pdfdetail['Tbody'][4].replace('€','').replace(',','.').replace(' ',''))/1.2)*0.2,2)) + """</debit>\n
-	</importEntry>\n
-	</wsImportEntry>\n
-	</importEntryRequest>\n
+	<importDate>"""+str(date_td)+"""</importDate>
+	<wsImportEntry>
+	<importEntry>
+	<journalRef>VT</journalRef>
+	<date>""" + date + """</date>
+	<accountNumber>7072000000</accountNumber>
+	<description>DELIVEROO</description>
+	<credit>""" + str(round(pdfdetail['Tbody'][0]/1.1,2)) + """</credit>
+	<debit>0</debit>
+	</importEntry>
+	<importEntry>
+	<journalRef>VT</journalRef>
+	<date>""" + date + """</date>
+	<accountNumber>5115000000</accountNumber>
+	<description>DELIVEROO</description>
+	<credit>0</credit>
+	<debit>""" + str(pdfdetail['Tbody'][-1]) + """</debit>
+	</importEntry>
+	<importEntry>
+	<journalRef>VT</journalRef>
+	<date>""" + date + """</date>
+	<accountNumber>6225000000</accountNumber>
+	<description>DELIVEROO</description>
+	<credit>0</credit>
+	<debit>""" + str(round(pdfdetail['Tbody'][3]/1.2,2)) + """</debit>
+	</importEntry>
+	<importEntry>
+	<journalRef>VT</journalRef>
+	<date>""" + date + """</date>
+	<accountNumber>4457100000</accountNumber>
+	<description>DELIVEROO</description>
+	<credit>""" + str(round((pdfdetail['Tbody'][0]/1.1)*0.1,2)) + """</credit>
+	<debit>0</debit>
+	</importEntry>
+	<importEntry>
+	<journalRef>VT</journalRef>
+	<date>""" + date + """</date>
+	<accountNumber>4456600000</accountNumber>
+	<description>DELIVEROO</description>
+	<credit>0</credit>
+	<debit>"""+ str(round((pdfdetail['Tbody'][3]/1.2)*0.2,2)) + """</debit>
+	</importEntry>
+	</wsImportEntry>
+	</importEntryRequest>
 	"""
 
 	post_data(data,dossier)
 
 	FullObjectJSON = json.dumps(FullObject,ensure_ascii=False)
 	return FullObjectJSON
-	# except:
-	# 	return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
+	#except:
+	#	return "Impossible de récupérer les données, les identifiants sont peut-être incorrects"
 
 def post_data(data,dossier):
 	print(data)
@@ -207,5 +219,6 @@ def enable_download_in_headless_chrome(driver, download_dir):
 if __name__=='__main__':
 	account=DELIVEROO['account']
 	passphrase=DELIVEROO['password']
+	dossier=DELIVEROO['dossier']
 	print(main())
 

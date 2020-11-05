@@ -1,6 +1,7 @@
 import requests 
 
 def post_data_to_api(content,dossier):
+	print(dossier)
 	url="https://saas.irf-cloud.com/irfservice/services/irfservice.svc/company/{"+dossier+"}/entries"
 	headers ={
 		'Content-Type': 'application/xml',
@@ -9,5 +10,6 @@ def post_data_to_api(content,dossier):
 	}
 	z = requests.post(url, data = content.encode('utf-8'), headers = headers)
 	print(z.text)
+
 
 
