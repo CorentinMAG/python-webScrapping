@@ -30,7 +30,7 @@ def main():
 
 		#run chrome with headless option
 		options=webdriver.ChromeOptions()
-		options.add_argument('headless')
+		#options.add_argument('headless')
 		options.add_argument('lang=fr')
 		options.add_argument('log-level=3')
 		driver = webdriver.Chrome(options=options,executable_path=path)
@@ -202,8 +202,14 @@ def main():
 
 			#bonus ?
 
-			# compensation ?
-
+			# compensation
+			try:
+				compensation = invoice['detail']['Fees and other payments']['Ajustements liés à des erreurs de commande (TVA comprise)']
+			except:
+				try:
+					compensation = invoice['detail']['Fees and other payments']['Order Error Adjustments (including VAT)']
+				except:
+					pass
 
 
 			data="""<importEntryRequest>\n

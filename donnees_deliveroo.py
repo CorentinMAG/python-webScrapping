@@ -31,7 +31,7 @@ def main():
 
 	#run chrome with headless option
 	options=webdriver.ChromeOptions()
-	#options.add_argument("headless")
+	options.add_argument("headless")
 	options.add_argument('lang=fr')
 	options.add_argument('log-level=3')
 	options.add_argument("--disable-dev-shm-usage") #fix problem on linux os
@@ -72,11 +72,9 @@ def main():
 	RefusedPercentage=driver.find_elements_by_tag_name('h2')[4].text
 	ReviewOfTheLast7Days={"Commandes terminées":OrdersFinished,"Temps de préparation":PreparationTime,"Commandes refusées":RefusedOrders,"Pourcentage de refus":RefusedPercentage,"Chiffre affaire":TurnOver,"Note client":CustomersMark}
 
-	try:
-		driver.find_element_by_link_text('Ventes')
-		driver.find_element_by_link_text('Ventes').click()
-	except:
-		driver.find_element_by_link_text('Sales').click()
+	navbar = driver.find_element_by_tag_name('ul')
+	sales = navbar.find_elements_by_tag_name('li')[1]
+	sales.find_element_by_tag_name('a').click()
 	time.sleep(5)
 
 	#daily order
@@ -96,11 +94,9 @@ def main():
 	except:
 		DailyOrders["data"]="Pas de commandes ce jour-ci"
 
-	try:
-		driver.find_element_by_link_text('Factures')
-		driver.find_element_by_link_text('Factures').click()
-	except:
-		driver.find_element_by_link_text('Invoices').click()
+	navbar = driver.find_element_by_tag_name('ul')
+	invoices = navbar.find_elements_by_tag_name('li')[4]
+	invoices.find_element_by_tag_name('a').click()
 
 	#invoices
 	time.sleep(10)
