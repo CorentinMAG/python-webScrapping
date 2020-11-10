@@ -29,24 +29,13 @@ def main():
 	driver.get("file://%s" % (htmlpath));
 	time.sleep(2)
 
-	montant_total = driver.find_element_by_xpath("/html/body/div[20]/span").text.replace(".","").replace(",",".")
-	commission = driver.find_element_by_xpath("/html/body/div[24]/span").text.replace(",",".")
-	frais_supplementaire = driver.find_element_by_xpath("/html/body/div[42]/span").text.replace(",",".")
+	montant_total = driver.find_element_by_xpath("/html/body/div[20]/span").text.replace(".","").replace('\n','').replace(",",".")
+	commission = driver.find_element_by_xpath("/html/body/div[24]/span").text.replace('\n','').replace(",",".")
+	try:
+		frais_supplementaire = driver.find_element_by_xpath("/html/body/div[42]/span").text.replace('\n','').replace(",",".")
+	except:
+		frais_supplementaire = 0
 
-	# try:
-	# 	if 'Nouvelle' or 'New' in driver.find_element_by_xpath("/html/body/div[17]/span"):
-	# 		montant_total = driver.find_element_by_xpath("/html/body/div[24]/span").text.replace(".","").replace(",",".")
-	# 		commission = driver.find_element_by_xpath("/html/body/div[39]/span").text.replace(",",".")
-	# 		frais_supplementaire = driver.find_element_by_xpath("/html/body/div[54]/span").text.replace(",",".")
-	# 	else:
-	# 		montant_total = driver.find_element_by_xpath("/html/body/div[21]/span").text.replace(".","").replace(",",".")
-	# 		commission = driver.find_element_by_xpath("/html/body/div[31]/span").text.replace(",",".")
-	# 		frais_supplementaire = driver.find_element_by_xpath("/html/body/div[46]/span").text.replace(",",".")
-	# except:
-	# 	montant_total = driver.find_element_by_xpath("/html/body/div[21]/span").text.replace(".","").replace(",",".")
-	# 	commission = driver.find_element_by_xpath("/html/body/div[31]/span").text.replace(",",".")
-	# 	frais_supplementaire = driver.find_element_by_xpath("/html/body/div[46]/span").text.replace(",",".")
-	# finally:
 	montant_total = float(montant_total)
 	commission = float(commission)
 	frais_supplementaire = float(frais_supplementaire)

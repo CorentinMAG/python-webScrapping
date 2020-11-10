@@ -9,9 +9,10 @@ try:
 			#si vous n'utilisez pas option_files (qui consiste à regrouper
 			#dans un fichier les informations de connexion) alors il faut faire:
 			user='corentin',
-			password='h8795642klm',
+			password='vlgklm91',
 			database='otacos',
-			host='localhost'
+			host='localhost',
+			auth_plugin='mysql_native_password'
 		     # option_files=option_file
 		)
 		cursor = mydb.cursor()

@@ -72,9 +72,10 @@ def main():
 	RefusedPercentage=driver.find_elements_by_tag_name('h2')[4].text
 	ReviewOfTheLast7Days={"Commandes terminées":OrdersFinished,"Temps de préparation":PreparationTime,"Commandes refusées":RefusedOrders,"Pourcentage de refus":RefusedPercentage,"Chiffre affaire":TurnOver,"Note client":CustomersMark}
 
-	navbar = driver.find_element_by_tag_name('ul')
-	sales = navbar.find_elements_by_tag_name('li')[1]
-	sales.find_element_by_tag_name('a').click()
+	# utiliser directement selenium ne marche pas donc on passe par le js
+	js = """let anchor = document.querySelector("a[href='/orders']");
+			anchor.click();"""
+	driver.execute_script(js)
 	time.sleep(5)
 
 	#daily order
@@ -94,15 +95,15 @@ def main():
 	except:
 		DailyOrders["data"]="Pas de commandes ce jour-ci"
 
-	navbar = driver.find_element_by_tag_name('ul')
-	invoices = navbar.find_elements_by_tag_name('li')[4]
-	invoices.find_element_by_tag_name('a').click()
+	js = """let anchor = document.querySelector("a[href='/reports/invoices']");
+			anchor.click();"""
+	driver.execute_script(js)
 
 	#invoices
 	time.sleep(10)
 	test=driver.find_element_by_xpath('/html/body/div[1]/div[1]/main/div[2]/div/div[2]/div/div/div/div[2]/div[1]')
-	a = test.find_element_by_tag_name('a')
-	h=a.get_attribute('href')
+	link = test.find_element_by_tag_name('a')
+	h=link.get_attribute('href')
 	time.sleep(5)
 	driver.get(h)
 	time.sleep(5)

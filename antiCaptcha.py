@@ -170,7 +170,7 @@ def main():
 				try:
 					com = invoice['detail']['Fees and other payments']['sub']['Uber Fee (including VAT)']
 				except:
-					pass
+					com = 0
 
 			## cb
 			try:
@@ -179,7 +179,7 @@ def main():
 				try:
 					cb = invoice['detail']['Total Payout']['sub']['Your bank payout']
 				except:
-					pass
+					cb = 0
 
 			#ticket resto
 			try:
@@ -188,7 +188,7 @@ def main():
 				try:
 					tkresto = invoice['detail']['Total Payout']['sub']['Voucher earnings']
 				except:
-					pass
+					tkresto = 0
 
 			# earnings
 			try:
@@ -197,7 +197,7 @@ def main():
 				try:
 					revenu = invoice['detail']['Earnings']['total']
 				except:
-					pass
+					revenu = 0
 
 
 			#bonus ?
@@ -209,9 +209,12 @@ def main():
 				try:
 					compensation = invoice['detail']['Fees and other payments']['Order Error Adjustments (including VAT)']
 				except:
-					pass
+					compensation = 0
 
-
+			com = round(float(com)/1.2,2)
+			tva_ca = round(com*0.1,2)
+			c = round(com*0.2,2)
+			ht_ca = round(float(revenu)/1.1,2)  
 			data="""<importEntryRequest>\n
 			<importDate>"""+date_td+"""</importDate>\n
 			<wsImportEntry>\n
@@ -221,7 +224,7 @@ def main():
 			<accountNumber>6222000000</accountNumber>\n
 			<description>VENTE UBER EATS</description>\n
 			<credit>0</credit>\n
-			<debit>0</debit>\n
+			<debit>"""+ str(com) +"""</debit>\n
 			</importEntry>\n
 			<importEntry>\n
 			<journalRef>VT</journalRef>\n
@@ -229,7 +232,7 @@ def main():
 			<accountNumber>4456600000</accountNumber>\n
 			<description>VENTE UBER EATS</description>\n
 			<credit>0</credit>\n
-			<debit>""" + com + """</debit>\n
+			<debit>""" + str(c) + """</debit>\n
 			</importEntry>\n
 			<importEntry>\n
 			<journalRef>VT</journalRef>\n
@@ -237,7 +240,7 @@ def main():
 			<accountNumber>5112000000</accountNumber>\n
 			<description>VENTE UBER EATS</description>\n
 			<credit>0</credit>\n
-			<debit>""" + cb + """</debit>\n
+			<debit>""" + str(cb) + """</debit>\n
 			</importEntry>\n
 			<importEntry>\n
 			<journalRef>VT</journalRef>\n
@@ -245,14 +248,14 @@ def main():
 			<accountNumber>5114000000</accountNumber>\n
 			<description>VENTE UBER EATS</description>\n
 			<credit>0</credit>\n
-			<debit>""" + tkresto + """</debit>\n
+			<debit>""" + str(tkresto) + """</debit>\n
 			</importEntry>\n
 			<importEntry>\n
 			<journalRef>VT</journalRef>\n
 			<date>""" + payment_date + """</date>\n
 			<accountNumber>7070000000</accountNumber>\n
 			<description>VENTE UBER EATS</description>\n
-			<credit>""" + revenu + """</credit>\n
+			<credit>""" + str(ht_ca) + """</credit>\n
 			<debit>0</debit>\n
 			</importEntry>\n
 			<importEntry>\n
@@ -260,7 +263,7 @@ def main():
 			<date>""" + payment_date + """</date>\n
 			<accountNumber>4457100000</accountNumber>\n
 			<description>VENTE UBER EATS</description>\n
-			<credit>0</credit>\n
+			<credit>"""+str(tva_ca)+"""</credit>\n
 			<debit>0</debit>\n
 			</importEntry>\n
 			</wsImportEntry>\n
